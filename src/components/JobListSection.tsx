@@ -38,7 +38,7 @@ export default function JobListSection({ jobs }: { jobs: Job[] }) {
               {searchResults.map((job) => (
                 <div
                   key={job.id}
-                  className="border border-gray-300 rounded-lg p-4 bg-gray-50 shadow-sm"
+                  className="border border-gray-300 rounded-lg p-4 bg-white-50 shadow-sm"
                 >
                   <p className="font-bold text-lg mb-2">{job.title}</p>
                   <p className="text-gray-700">カテゴリ: {job.category}</p>

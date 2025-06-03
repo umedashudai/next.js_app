@@ -1,9 +1,8 @@
 
-'use client'
+'use client';
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-// import { useJobContext } from '@/context/JobContext';
 
 export default function JobPostingPage() {
   const router = useRouter();
@@ -23,11 +22,13 @@ export default function JobPostingPage() {
       setIsSubmitting(false);
       return;
     }
+
     if (isNaN(Number(salary))) {
       alert('年収は半角数字を入力してください。');
       setIsSubmitting(false);
       return;
     }
+
     const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
     try {
@@ -36,24 +37,22 @@ export default function JobPostingPage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        credentials: 'include', // axios.defaults.withCredentials と同じ効果
+        credentials: 'include',
         body: JSON.stringify({
-            job: { title, salary: Number(salary), category },
+          job: { title, salary: Number(salary), category },
         }),
       });
       if (!res.ok) {
         const errorData = await res.json();
-        // throw new Error(JSON.stringify(errorData.errors || errorData));
         throw new Error(errorData.error || '求人投稿に失敗しました');
       }
-    //   await fetchJobs();
-      router.push('/');
+      router.replace('/');
     } catch (error: unknown) {
-      if (error instanceof Error)
+      if (error instanceof Error) {
         alert(error.message);
-      else
+      } else {
         alert('予期しないエラーが発生しました');
-    } finally {
+      }
       setIsSubmitting(false);
     }
   };
@@ -106,9 +105,14 @@ export default function JobPostingPage() {
       <div className="text-center">
         <button
           type="submit"
-          className="bg-blue-500 text-white font-semibold py-2 px-6 rounded hover:bg-blue-600 transition"
+          disabled={isSubmitting}
+          className={`font-semibold py-2 px-6 rounded transition ${
+            isSubmitting
+              ? 'bg-gray-400 cursor-not-allowed'
+              : 'bg-blue-500 hover:bg-blue-600 text-white'
+          }`}
         >
-          投稿
+          {isSubmitting ? '投稿中...' : '投稿'}
         </button>
       </div>
     </form>
